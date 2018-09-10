@@ -1,18 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Lenin Romo
- * Date: 04/09/2018
- * Time: 14:02
- */
 
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+# use Symfony\Component\Routing\Annotation\Route; NO SIRVE!! (Por ahora)
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 
-class ArticleController
+class ArticleController extends AbstractController
 {
     /**
      * @Route("/")
@@ -22,9 +18,21 @@ class ArticleController
     }
 
     /**
-     * @Route("news/why-asteroids-taste-like-bacon")
+     * @Route("/news/{slug}")
      */
-    public function show(){
-        return new Response("Future page to show one space article!");
-    }
+        public function show($slug)
+        {
+            $comments = [
+                'I ate a normal rock once. It did NOT taste like bacon!',
+                'Woohoo! I\'m going on an all-asteroid diet!',
+                'I like bacon too! Buy some from my site! bakinsomebacon.com',
+            ];
+
+            dump($slug, $this);
+
+            return $this->render('article/show.html.twig', [
+                'title' => ucwords(str_replace('-', ' ', $slug)),
+                'comments' => $comments,
+            ]);
+        }
 }
